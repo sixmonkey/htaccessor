@@ -82,10 +82,15 @@ class JsonConfigService implements JsonConfigContract
     }
 
     /**
-     * @return void
+     * @return bool
      */
-    public function write(): void
+    public function write(): bool
     {
-        Storage::put('htaccessor.json', json_encode($this->config, JSON_PRETTY_PRINT));
+        try {
+            return Storage::put('htaccessor.json', json_encode($this->config, JSON_PRETTY_PRINT));
+        } catch (Exception $exception) {
+            echo $exception->getMessage();
+            return false;
+        }
     }
 }

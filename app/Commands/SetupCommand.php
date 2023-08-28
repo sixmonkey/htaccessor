@@ -4,10 +4,8 @@ namespace App\Commands;
 
 use App\Contracts\JsonConfigContract;
 use Exception;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 use Spatie\Emoji\Emoji;
-use function Termwind\{render};
 
 class SetupCommand extends Command
 {
@@ -33,18 +31,12 @@ class SetupCommand extends Command
     {
         $jsonConfigContract->setCreatable(true);
 
-        $htaccessLocation = $this->ask(Emoji::thinkingFace() . ' Where is your .htaccess file located?', $jsonConfigContract->get('htaccess_location', './public/.htaccess'));
+        $htaccessLocation = $this->ask(Emoji::thinkingFace() . ' Where is your public folder located?', $jsonConfigContract->get('public_path', './public'));
 
-        $jsonConfigContract->set('htaccess_location', $htaccessLocation);
+        $jsonConfigContract->set('public_path', $htaccessLocation);
 
         $jsonConfigContract->write();
-    }
 
-    /**
-     * Define the command's schedule.
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
+        $this->info(Emoji::partyPopper() . ' htaccessor is ready to use! Please run `htaccessor edit` to configure your first environment.');
     }
 }
