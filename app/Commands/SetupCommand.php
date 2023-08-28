@@ -2,8 +2,11 @@
 
 namespace App\Commands;
 
+use App\Contracts\JsonConfigContract;
+use Exception;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use Spatie\Emoji\Emoji;
 use function Termwind\{render};
 
 class SetupCommand extends Command
@@ -24,17 +27,17 @@ class SetupCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws Exception
      */
-    public function handle(): void
+    public function handle(JsonConfigContract $jsonConfigContract): void
     {
-        render(<<<'HTML'
-            <div class="py-1 ml-2">
-                <div class="px-1 bg-blue-300 text-black">Laravel Zero</div>
-                <em class="ml-1">
-                  Simplicity is the ultimate sophistication.
-                </em>
-            </div>
-        HTML);
+        $jsonConfigContract->setCreatable(true);
+
+        $htaccessLocation = $this->ask(Emoji::thinkingFace() . ' Where is your .htaccess file located?', $jsonConfigContract->get('htaccess_location', './public/.htaccess'));
+
+        $jsonConfigContract->set('htaccess_location', $htaccessLocation);
+
+        $jsonConfigContract->write();
     }
 
     /**
