@@ -68,6 +68,12 @@ return [
 
     'providers' => [
         App\Providers\AppServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+        DinhQuocHan\Twig\TwigServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
 ];

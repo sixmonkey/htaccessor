@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use App\Contracts\JsonConfigContract;
+use App\Contracts\JsonConfigServiceContract;
 use Exception;
 use LaravelZero\Framework\Commands\Command;
 use Spatie\Emoji\Emoji;
@@ -25,18 +25,22 @@ class SetupCommand extends Command
 
     /**
      * Execute the console command.
-     * @throws Exception
+     * @param JsonConfigServiceContract $jsonConfig
+     * @return int
      */
-    public function handle(JsonConfigContract $jsonConfigContract): void
+    public function handle(JsonConfigServiceContract $jsonConfig): int
     {
-        $jsonConfigContract->setCreatable(true);
+        $jsonConfig->setCreatable(true);
 
-        $htaccessLocation = $this->ask(Emoji::thinkingFace() . ' Where is your public folder located?', $jsonConfigContract->get('public_path', './public'));
+        $htaccessLocation = $this->ask(Emoji::thinkingFace() . ' Where is your public folder located?', $jsonConfig->get('public_path', './public'));
 
-        $jsonConfigContract->set('public_path', $htaccessLocation);
+        $jsonConfig->put('public_path', $htaccessLocation);
 
-        $jsonConfigContract->write();
+        if ($jsonConfig->write()) {
+            $this->info(Emoji::partyPopper() . ' htaccessor is ready to use! Please run `htaccessor edit` to configure your first environment.');
+            return self::SUCCESS;
+        }
 
-        $this->info(Emoji::partyPopper() . ' htaccessor is ready to use! Please run `htaccessor edit` to configure your first environment.');
+        return self::FAILURE;
     }
 }
