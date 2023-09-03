@@ -20,9 +20,10 @@ class EnvironmentsMenuHelper implements EnvironmentsMenuHelperContract
     }
 
     /**
+     * @param boolean|true $addable
      * @return string|null
      */
-    public function selectEnvironment(): ?string
+    public function selectEnvironment(bool $addable = true): ?string
     {
         $environments = $this->environmentsService->allKeys();
         $menu = new Menu('Please choose an environment', array_combine($environments->toArray(), $environments->toArray())); // TODO: Awhy do we need array_combine here? Seems like a total hack.
@@ -34,22 +35,25 @@ class EnvironmentsMenuHelper implements EnvironmentsMenuHelperContract
             $menu->addLineBreak();
         }
 
-        $itemCallable = function (CliMenu $cliMenu) use ($menu) {
-            $newEnv = $cliMenu
-                ->askText()
-                ->setValidator(function ($environmentName) {
-                    $validator = Validator::make(['environmentName' => $environmentName], ['environmentName' => 'required|lowercase|alpha_dash']);
-                    return $validator->passes();
-                })
-                ->setPromptText('What is your new environment\'s name?')
-                ->setValidationFailedText(Emoji::pileOfPoo() . " Must be lowercase and only contain letters, numbers, dashes and underscores.")
-                ->ask();
+        if ($addable) {
+            $itemCallable = function (CliMenu $cliMenu) use ($menu) {
+                $newEnv = $cliMenu
+                    ->askText()
+                    ->setValidator(function ($environmentName) {
+                        $validator = Validator::make(['environmentName' => $environmentName], ['environmentName' => 'required|lowercase|alpha_dash']);
+                        return $validator->passes();
+                    })
+                    ->setPromptText('What is your new environment\'s name?')
+                    ->setValidationFailedText(Emoji::pileOfPoo() . " Must be lowercase and only contain letters, numbers, dashes and underscores.")
+                    ->ask();
 
-            $menu->setResult($newEnv->fetch());
+                $menu->setResult($newEnv->fetch());
 
-            $cliMenu->close();
-        };
-        $menu->addItem('🪄  Add a new environment', $itemCallable);
+                $cliMenu->close();
+            };
+            $menu->addItem('🪄  Add a new environment', $itemCallable);
+        }
+
         $menu->setExitButtonText('👋 Exit');
 
         return $menu->open();
