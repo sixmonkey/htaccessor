@@ -1,4 +1,12 @@
-# HTACCESSOR
+```
+ _      _                                                   
+| |__  | |_   __ _   ___   ___   ___  ___  ___   ___   _ __ 
+| '_ \ | __| / _` | / __| / __| / _ \/ __|/ __| / _ \ | '__|
+| | | || |_ | (_| || (__ | (__ |  __/\__ \\__ \| (_) || |   
+|_| |_| \__| \__,_| \___| \___| \___||___/|___/ \___/ |_|   
+
+```
+# htaccessor
 _Manage your (WordPress) .htaccess files with ease_
 
 ## Installation
@@ -34,4 +42,10 @@ You can use the setup command to change your basic settings at any time.
 ### Writing the .htaccess file for an environment
 ```bash
 ./vendor/bin/htaccessor write [environment]
+```
+
+### Deleting an environment
+
+```bash
+./vendor/bin/htaccessor delete [?environment]
 ```
