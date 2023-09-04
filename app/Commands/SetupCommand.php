@@ -2,9 +2,10 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
+use App\Contracts\JsonConfigServiceContract;
+use Exception;
 use LaravelZero\Framework\Commands\Command;
-use function Termwind\{render};
+use Spatie\Emoji\Emoji;
 
 class SetupCommand extends Command
 {
@@ -24,24 +25,22 @@ class SetupCommand extends Command
 
     /**
      * Execute the console command.
+     * @param JsonConfigServiceContract $jsonConfig
+     * @return int
      */
-    public function handle(): void
+    public function handle(JsonConfigServiceContract $jsonConfig): int
     {
-        render(<<<'HTML'
-            <div class="py-1 ml-2">
-                <div class="px-1 bg-blue-300 text-black">Laravel Zero</div>
-                <em class="ml-1">
-                  Simplicity is the ultimate sophistication.
-                </em>
-            </div>
-        HTML);
-    }
+        $jsonConfig->setCreatable(true);
 
-    /**
-     * Define the command's schedule.
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
+        $htaccessLocation = $this->ask(Emoji::thinkingFace() . ' Where is your public folder located?', $jsonConfig->get('public_path', './public'));
+
+        $jsonConfig->put('public_path', $htaccessLocation);
+
+        if ($jsonConfig->write()) {
+            $this->info(Emoji::partyPopper() . ' htaccessor is ready to use! Please run `htaccessor edit` to configure your first environment.');
+            return self::SUCCESS;
+        }
+
+        return self::FAILURE;
     }
 }

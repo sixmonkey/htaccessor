@@ -12,9 +12,18 @@
     ],
     "require": {
         "php": "^8.1",
-        "nunomaduro/termwind": "^1.15.1"
+        "dinhquochan/laravel-twig": "^3.0",
+        "illuminate/translation": "^10.21",
+        "illuminate/validation": "^10.21",
+        "illuminate/view": "^10.0",
+        "laminas/laminas-servicemanager": "^3.2",
+        "laminas/laminas-text": "^2.10",
+        "nunomaduro/laravel-console-menu": "^3.4",
+        "nunomaduro/termwind": "^1.15.1",
+        "spatie/emoji": "^4.0"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
         "laravel-zero/framework": "^10.0.2",
         "laravel/pint": "^1.8",
         "mockery/mockery": "^1.5.1",
@@ -42,5 +51,10 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "bin": ["builds/htaccessor"]
+    "bin": ["builds/htaccessor"],
+    "scripts": {
+        "post-update-cmd": [
+            "@php htaccessor ide-helper:meta"
+        ]
+    }
 }
