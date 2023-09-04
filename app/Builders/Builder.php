@@ -3,16 +3,23 @@
 namespace App\Builders;
 
 use App\Contracts\EnvironmentsServiceContract;
+use Illuminate\Console\Concerns\InteractsWithIO;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
 abstract class Builder
 {
+
+    use InteractsWithIO;
+
     public function __construct(
-        protected array                       $options,
+        protected Collection|array            $options,
         protected EnvironmentsServiceContract $environmentsService,
     )
     {
@@ -29,7 +36,7 @@ abstract class Builder
      */
     public function build(): Application|string|Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View
     {
-        $result = view('builders.' . Str::kebab(class_basename(preg_replace('/Builder$/', '',  static::class))), $this->options);
+        $result = view('builders.' . Str::kebab(class_basename(preg_replace('/Builder$/', '', static::class))), $this->options);
 
         return $result instanceof View ? $result->render() : '';
     }

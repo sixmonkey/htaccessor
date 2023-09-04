@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use App\Contracts\BuildersMenuHelperContract;
-use App\Contracts\BuildersServiceContract;
 use App\Contracts\EnvironmentsMenuHelperContract;
 use App\Contracts\EnvironmentsServiceContract;
 use App\Contracts\JsonConfigServiceContract;
@@ -34,7 +33,6 @@ class EditCommand extends Command
     public function handle(
         JsonConfigServiceContract      $jsonConfig,
         EnvironmentsServiceContract    $environmentsService,
-        BuildersServiceContract        $builders,
         EnvironmentsMenuHelperContract $environmentsMenuHelper,
         BuildersMenuHelperContract     $buildersMenuHelper
     ): int
@@ -49,6 +47,16 @@ class EditCommand extends Command
         }
 
         $builders = $buildersMenuHelper->selectBuilders($environmentName);
+
+        $builders->each(function ($options, $builderName) use (&$builders, $buildersMenuHelper) {
+            $builder = new $builderName($options, app(EnvironmentsServiceContract::class));
+            if (method_exists($builder, 'configure')) {
+                $builder->setOutput($this->output);
+                $builder->setInput($this->input);
+                $this->info(Emoji::writingHand() . " Configuring $builder...");
+                $builders->put($builderName, $builder->configure());
+            }
+        });
 
         $environments->put($environmentName, $builders);
 
