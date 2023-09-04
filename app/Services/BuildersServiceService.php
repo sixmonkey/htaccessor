@@ -13,7 +13,8 @@ class BuildersServiceService implements BuildersServiceContract
      */
     public function __construct(protected Collection $builders)
     {
-        collect(config('builders', []))->each(fn($builder) => $this->builders->put($builder, $builder::getTitle()));
+        collect(config('builders', []))
+            ->each(fn($builder) => $this->builders->put($builder, $builder::getTitle()));
     }
 
     /**

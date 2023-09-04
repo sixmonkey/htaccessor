@@ -9,14 +9,16 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
 abstract class Builder
 {
 
     use InteractsWithIO;
+
+    public static int $position = 99;
+
+    public static bool $needsModRewrite = false;
 
     public function __construct(
         protected Collection|array            $options,

@@ -55,16 +55,26 @@ class WriteCommand extends Command
 
         $this->info(Emoji::writingHand() . " Writing .htaccess file for environment $environmentName...");
 
-        $output = "";
+        $output = [
+            'mod_rewrite_directives' => [],
+            'directives' => [],
+        ];
 
-        $environment->each(function ($options, $builder) use (&$output) {
-            $this->info(Emoji::magicWand() . " Executing builder $builder...");
 
-            $builder = app($builder, ['options' => $options]);
-            $output .= $builder->build() . "\r\n";
-        });
+        $environment
+            ->sortBy(fn($options, $builder) => ($builder)::$position)
+            ->each(function ($options, $builder) use (&$output) {
+                $this->info(Emoji::magicWand() . " Executing builder $builder...");
 
-        Storage::put($jsonConfig->get('public_path') . DIRECTORY_SEPARATOR . '.htaccess', $output);
+                $builder = app($builder, ['options' => $options]);
+
+                $output[$builder::$needsModRewrite ? 'mod_rewrite_directives' : 'directives'][] = $builder->build();
+            });
+
+        Storage::put(
+            $jsonConfig->get('public_path') . DIRECTORY_SEPARATOR . '.htaccess',
+            view('htaccess-base', $output)->render()
+        );
 
         $this->info(Emoji::writingHand() . " Done!");
 
