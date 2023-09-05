@@ -73,7 +73,7 @@ class WriteCommand extends Command
 
                 $builder = app($builder, ['options' => $options]);
 
-                $output[$builder::$needsModRewrite ? 'mod_rewrite_directives' : 'directives'][] = $builder->build();
+                $output[$builder::$requiresModRewrite ? 'mod_rewrite_directives' : 'directives'][] = $builder->build();
             });
 
         Storage::put(

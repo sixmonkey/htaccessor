@@ -14,7 +14,7 @@ class {{ class }} extends Builder
     /**
      * @var bool Whether this builder needs mod_rewrite or not
      */
-    public static bool $needsModRewrite = false;
+    public static bool $requiresModRewrite = false;
 
     /**
      * @return string The readable title of this builder

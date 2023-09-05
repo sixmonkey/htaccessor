@@ -9,7 +9,7 @@ class RedirectToMainDomain extends Builder
     /**
      * @var bool Whether this builder needs mod_rewrite or not
      */
-    public static bool $needsModRewrite = true;
+    public static bool $requiresModRewrite = true;
 
     /**
      * @var int The position of this builder in the htaccess file

@@ -18,7 +18,7 @@ abstract class Builder
 
     public static int $position = 99;
 
-    public static bool $needsModRewrite = false;
+    public static bool $requiresModRewrite = false;
 
     public function __construct(
         protected Collection|array            $options,
