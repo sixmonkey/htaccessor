@@ -39,6 +39,7 @@ class WriteCommand extends Command
     ): int
     {
         $environments = $environmentsService->all();
+
         if (!$environments->count()) {
             $this->error(Emoji::pileOfPoo() . " You don't have any environments yet.");
             return self::FAILURE;
@@ -62,13 +63,17 @@ class WriteCommand extends Command
 
 
         $environment
-            ->sortBy(fn($options, $builder) => ($builder)::$position)
+            ->sortBy(fn($options, $builder) => class_exists($builder) ? ($builder)::$position : 999)
             ->each(function ($options, $builder) use (&$output) {
+                if(!class_exists($builder)) {
+                    $this->warn(Emoji::pileOfPoo() . " Builder $builder does not exist.");
+                    return;
+                }
                 $this->info(Emoji::magicWand() . " Executing builder $builder...");
 
                 $builder = app($builder, ['options' => $options]);
 
-                $output[$builder::$needsModRewrite ? 'mod_rewrite_directives' : 'directives'][] = $builder->build();
+                $output[$builder::$requiresModRewrite ? 'mod_rewrite_directives' : 'directives'][] = $builder->write();
             });
 
         Storage::put(
