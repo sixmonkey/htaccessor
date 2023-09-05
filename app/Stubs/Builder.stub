@@ -1,0 +1,34 @@
+<?php
+
+namespace {{ namespace }};
+
+class {{ class }} extends Builder
+{
+    /**
+     * @var int The position of this builder in the htaccess file
+     */
+    public static int $position = 999;
+
+    /**
+     * @var bool Whether this builder needs mod_rewrite or not
+     */
+    public static bool $needsModRewrite = false;
+
+    /**
+     * @return string The readable title of this builder
+     */
+    static function getTitle(): string
+    {
+        return "Some magic htaccess things";
+    }
+
+    /**
+     * @return array The config options for this builder
+     */
+    public function configure(): array
+    {
+        return [
+            'foo' => $this->ask('What is foo?', $this->options['foo'] ?? null),
+        ];
+    }
+}
