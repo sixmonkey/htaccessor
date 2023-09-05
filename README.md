@@ -107,6 +107,32 @@ public function configure(): array
 You can use any method available for prompting for input in Laravel's artisan commands to collect your settings.
 Please refer to the [Laravel documentation](https://laravel.com/docs/10.x/artisan#prompting-for-input) for more information on how to prompt for user input.
 
+#### Doing something before or after writing the .htaccess file
+Sometimes you might want to do something before or after your builder is written to the `.htaccess` file.
+You can achieve this by implementing the `beforeWrite()` and `afterWrite()` methods:
+
+##### beforeWrite
+This method is called before your builder is written to the `.htaccess` file.
+It should return a boolean value indicating whether the builder should be written to the `.htaccess` file or not.
+```php
+public function beforeWrite(): bool
+{
+    // Do something before the builder is written to the .htaccess file
+    return true;
+}
+```
+
+##### afterWrite
+This method is called after your builder is written to the `.htaccess` file.
+The result of the `write()` method is passed to this method as a parameter.
+You can modify this result and need return it from this method.
+```php
+public function afterWrite(string $result): string
+{
+    // Do something after the builder is rendered and before it is written to the .htaccess file
+    return $result;
+}
+```
 
 ### View files for builders
 The view files for builders are simple blade templates. 

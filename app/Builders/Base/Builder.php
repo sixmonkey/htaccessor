@@ -33,14 +33,35 @@ abstract class Builder
     abstract static function getTitle(): string;
 
     /**
+     * @return true
+     */
+    protected function beforeWrite(): bool
+    {
+        return true;
+    }
+
+    /**
      * @return Application|string|Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View
      * @throws Throwable
      */
-    public function build(): Application|string|Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View
+    final public function write(): Application|string|Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View
     {
+        if(!$this->beforeWrite()) {
+            return '';
+        }
+
         $result = view('builders.' . Str::kebab(class_basename(preg_replace('/Builder$/', '', static::class))), $this->options);
 
-        return $result instanceof View ? $result->render() : '';
+        return $this->afterWrite($result instanceof View ? $result->render() : '');
+    }
+
+    /**
+     * @param string $result
+     * @return string
+     */
+    protected function afterWrite(string $result): string
+    {
+        return $result;
     }
 
     /**
