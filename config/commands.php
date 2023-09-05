@@ -76,8 +76,14 @@ return [
     |
     */
 
-    'remove' => [
-        // ..
-    ],
+    'remove' => Phar::running() ?
+        [
+            \App\Commands\MakeBuilder::class,
+            \Barryvdh\LaravelIdeHelper\Console\EloquentCommand::class,
+            \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand::class,
+            \Barryvdh\LaravelIdeHelper\Console\MetaCommand::class,
+            \Barryvdh\LaravelIdeHelper\Console\ModelsCommand::class,
+        ] :
+        [],
 
 ];
