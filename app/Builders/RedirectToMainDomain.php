@@ -2,6 +2,8 @@
 
 namespace App\Builders;
 
+use App\Builders\Base\Builder;
+
 class RedirectToMainDomain extends Builder
 {
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Builders;
 
-class WpBaseBuilder extends Builder
+use App\Builders\Base\Builder;
+
+class WpBase extends Builder
 {
     public static int $position = -1;
 

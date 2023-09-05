@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Builders;
+namespace App\Builders\Base;
 
 use App\Contracts\EnvironmentsServiceContract;
 use Illuminate\Console\Concerns\InteractsWithIO;

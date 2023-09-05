@@ -13,6 +13,7 @@
     "require": {
         "php": "^8.1",
         "dinhquochan/laravel-twig": "^3.0",
+        "haydenpierce/class-finder": "^0.5.3",
         "illuminate/translation": "^10.21",
         "illuminate/validation": "^10.21",
         "illuminate/view": "^10.0",
