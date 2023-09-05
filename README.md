@@ -104,6 +104,8 @@ public function configure(): array
     ];
 }
 ```
+You can use any method available for prompting for input in Laravel's artisan commands to collect your settings.
+Please refer to the [Laravel documentation](https://laravel.com/docs/10.x/artisan#prompting-for-input) for more information on how to prompt for user input.
 
 
 ### View files for builders
