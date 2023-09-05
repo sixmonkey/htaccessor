@@ -50,6 +50,13 @@ You can use the setup command to change your basic settings at any time.
 ./vendor/bin/htaccessor delete [?environment]
 ```
 
+## Contributing
+htaccessor is built on top of the [Laravel Zero](https://laravel-zero.com/) framework.  
+Please refer to the [Laravel Zero documentation](https://laravel-zero.com/docs/) for more information on how to use Laravel Zero.
+
+You are warmly invited to contribute to htaccessor by adding your own builders or by fixing bugs and adding features.  
+Please feel free to open a pull request or an issue.
+
 ## Adding Builders
 Please feel free to contribute to htaccessor by adding your own builders.
 Adding builders is easy!
