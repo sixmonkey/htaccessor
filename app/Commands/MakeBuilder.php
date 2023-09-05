@@ -16,7 +16,7 @@ class MakeBuilder extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:builder}';
+    protected $name = 'make:builder';
 
     /**
      * The description of the command.
